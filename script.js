@@ -6,7 +6,7 @@ const websiteNameElem = document.getElementById("website-name");
 const websiteUrlElem = document.getElementById("website-url");
 const bookmarksContainer = document.getElementById("bookmarks-container");
 
-let bookmarks = [];
+let bookmarks = {};
 
 // Show modal and focus on input
 function showModal() {
@@ -44,8 +44,8 @@ function buildBookmarks() {
   // Remove all bookmark elements
   bookmarksContainer.textContent = "";
   // Build items
-  bookmarks.forEach((bookmark) => {
-    const { name, url } = bookmark;
+  Object.keys(bookmarks).forEach((url) => {
+    const { name, url } = bookmarks[url];
     // Item
     const item = document.createElement("div");
     item.classList.add("item");
@@ -87,10 +87,9 @@ function fetchBookmarks() {
 
 // Delete bookmark
 function deleteBookmark(url) {
-  const filteredBookmarks = bookmarks.filter((b) => b.url !== url);
-  bookmarks = filteredBookmarks;
+  bookmarks[url] && delete bookmarks[url];
   // Update bookmarks array in local storage and re-populate DOM
-  if (bookmarks.length > 0) {
+  if (Object.keys(bookmarks).length > 0) {
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
   } else {
     localStorage.removeItem("bookmarks");
@@ -113,7 +112,7 @@ function storeBookmark(e) {
     name: nameValue,
     url: urlValue,
   };
-  bookmarks.push(bookmark);
+  bookmarks[urlValue] = bookmark;
   localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
   fetchBookmarks();
   bookmarkForm.reset();
