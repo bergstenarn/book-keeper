@@ -44,36 +44,38 @@ function buildBookmarks() {
   // Remove all bookmark elements
   bookmarksContainer.textContent = "";
   // Build items
-  Object.keys(bookmarks).forEach((url) => {
-    const { name, url } = bookmarks[url];
-    // Item
-    const item = document.createElement("div");
-    item.classList.add("item");
-    // Close icon
-    const closeIcon = document.createElement("i");
-    closeIcon.classList.add("fas", "fa-times");
-    closeIcon.setAttribute("title", "Delete Bookmark");
-    closeIcon.setAttribute("onclick", `deleteBookmark("${url}")`);
-    // Favicon / Link container
-    const linkinfo = document.createElement("div");
-    linkinfo.classList.add("name");
-    // Favicon
-    const favicon = document.createElement("img");
-    favicon.setAttribute(
-      "src",
-      `https://s2.googleusercontent.com/s2/favicons?domain=${url}`
-    );
-    favicon.setAttribute("alt", "Favicon");
-    // Link
-    const link = document.createElement("a");
-    link.setAttribute("href", `${url}`);
-    link.setAttribute("target", "_blank");
-    link.textContent = name;
-    // Append to bookmarks container
-    linkinfo.append(favicon, link);
-    item.append(closeIcon, linkinfo);
-    bookmarksContainer.appendChild(item);
-  });
+  Object.keys(bookmarks)
+    .sort()
+    .forEach((key) => {
+      const { name, url } = bookmarks[key];
+      // Item
+      const item = document.createElement("div");
+      item.classList.add("item");
+      // Close icon
+      const closeIcon = document.createElement("i");
+      closeIcon.classList.add("fas", "fa-times");
+      closeIcon.setAttribute("title", "Delete Bookmark");
+      closeIcon.setAttribute("onclick", `deleteBookmark("${url}")`);
+      // Favicon / Link container
+      const linkinfo = document.createElement("div");
+      linkinfo.classList.add("name");
+      // Favicon
+      const favicon = document.createElement("img");
+      favicon.setAttribute(
+        "src",
+        `https://s2.googleusercontent.com/s2/favicons?domain=${url}`
+      );
+      favicon.setAttribute("alt", "Favicon");
+      // Link
+      const link = document.createElement("a");
+      link.setAttribute("href", `${url}`);
+      link.setAttribute("target", "_blank");
+      link.textContent = name;
+      // Append to bookmarks container
+      linkinfo.append(favicon, link);
+      item.append(closeIcon, linkinfo);
+      bookmarksContainer.appendChild(item);
+    });
 }
 
 // Fetch bookmarks
